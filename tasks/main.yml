@@ -1,5 +1,16 @@
 # tasks for project creation
 ---
+- name: verify that roles are installed
+  command: ansible-galaxy role list
+  register: output
+  set_fact:
+    installed: "{{ output.stdout }}"
+- name: install uninstalled roles
+  command: ansible-galaxy role install {{ item }}
+  loop:
+    - "itayharell.index_create"
+    - "itayharell.token_create"
+  when: installed is not search({{ item }})
 - name: validate that priject_name is defined
   fail:
     msg: project_name is not defined
@@ -16,12 +27,12 @@
     - "master-apps"
 - name: create index
   include_role:
-    name: index_create
+    name: itayharell.index_create
   vars:
     index_name: "{{ project_name }}_logs"
 - name: create hec token
   include_role:
-    name: token_create
+    name: itayharell.token_create
   vars:
     token_name: "{{ project_name }}_token"
 - name: distrebute to search heads
