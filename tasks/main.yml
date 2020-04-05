@@ -5,6 +5,7 @@
   run_once: yes
   command: ansible-galaxy role list
   register: output
+- name: save output
   set_fact:
     installed: "{{ output.stdout }}"
 - name: install uninstalled roles
