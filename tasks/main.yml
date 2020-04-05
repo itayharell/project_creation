@@ -15,7 +15,7 @@
   loop:
     - "itayharell.index_create"
     - "itayharell.token_create"
-  when: installed is not search({{ item }})
+  when: installed is not search(item)
 - name: validate that priject_name is defined
   fail:
     msg: project_name is not defined
